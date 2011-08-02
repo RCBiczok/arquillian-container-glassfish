@@ -53,7 +53,6 @@ import org.xml.sax.InputSource;
  *
  * @author <a href="http://community.jboss.org/people/LightGuard">Jason Porter</a>
  */
-@SuppressWarnings({"HardcodedFileSeparator"})
 public class GlassFishRestDeployableContainer implements DeployableContainer<GlassFishRestConfiguration> {
     private static final String APPLICATION = "/applications/application";
 
@@ -63,7 +62,8 @@ public class GlassFishRestDeployableContainer implements DeployableContainer<Gla
 
     private String adminBaseUrl;
 
-    private String applicationBaseUrl;
+    @SuppressWarnings("unused")
+	private String applicationBaseUrl;
 
     private String deploymentName;
 
@@ -136,8 +136,9 @@ public class GlassFishRestDeployableContainer implements DeployableContainer<Gla
 
         try {
             // Export to a file so we can send it over the wire
-            final File archiveFile = new File(new File(System.getProperty("java.io.tmpdir")), archiveName);
-            archive.as(ZipExporter.class).exportZip(archiveFile, true);
+            final File archiveFile = new File(new File(System.getProperty("java.io.tmpdir")), 
+            		"arquillian"+Math.random()*1000000+archiveName);
+            archive.as(ZipExporter.class).exportTo(archiveFile, true);
 
             // Build up the POST form to send to Glassfish
             final FormDataMultiPart form = new FormDataMultiPart();
